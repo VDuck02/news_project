@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:new_projectv1/model/article_model.dart';
 import 'package:new_projectv1/utils/date_time_formatter.dart';
-
-import '../screens/news_detail_screen.dart';
+import 'package:new_projectv1/screens/news_detail_screen.dart';
 
 class NewsListItem extends StatelessWidget {
   final Article article;
@@ -12,7 +12,7 @@ class NewsListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _navigateToDetail(context),
+      onTap: () => _navigateToDetail(),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         child: Row(
@@ -36,17 +36,18 @@ class NewsListItem extends StatelessWidget {
                 children: [
                   Text(
                     article.title,
-                    style: const TextStyle(color: Colors.blue, fontSize: 14, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                        color: Colors.blue,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500),
                     maxLines: 2,
                     textAlign: TextAlign.start,
                   ),
-
                   Text(
                     DateTimeFormatter.formatTimeAgo(article.publishedAt),
                     style: const TextStyle(fontSize: 10),
                     maxLines: 2,
                   ),
-
                   const SizedBox(height: 4),
                   Text(
                     article.description,
@@ -54,7 +55,6 @@ class NewsListItem extends StatelessWidget {
                     maxLines: 2,
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.ellipsis,
-
                   ),
                 ],
               ),
@@ -65,12 +65,8 @@ class NewsListItem extends StatelessWidget {
     );
   }
 
-  void _navigateToDetail(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => NewsDetailScreen(article: article),
-      ),
-    );
+  void _navigateToDetail() {
+    Get.to(() => NewsDetailScreen(article: article));
   }
+
 }

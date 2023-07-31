@@ -25,37 +25,42 @@ class NewsDetailScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              article.title,
-              textAlign: TextAlign.start,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-            ),
-            Text(
-              '${Message.mPub}   ${DateTimeFormatter.formatApiDateTime(article.publishedAt)}',
-              style: const TextStyle(fontSize: 13, color: Colors.grey),
-            ),
-            const Divider(
-              color: Colors.grey,
-            ),
-            const SizedBox(height: 15),
-
-            article.urlToImage.isNotEmpty
-                ? Image.network(
-                    article.urlToImage,
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  )
-                : const SizedBox.shrink(),
-
-            const SizedBox(height: 10),
-            Text(article.content, textAlign: TextAlign.justify,),
-          ],
-        ),
+        child: newDetail,
       ),
+    );
+  }
+
+  Column get newDetail {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          article.title,
+          textAlign: TextAlign.start,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+        ),
+        Text(
+          '${Message.mPub}   ${DateTimeFormatter.formatApiDateTime(article.publishedAt)}',
+          style: const TextStyle(fontSize: 13, color: Colors.grey),
+        ),
+        const Divider(
+          color: Colors.grey,
+        ),
+        const SizedBox(height: 15),
+        article.urlToImage.isNotEmpty
+            ? Image.network(
+          article.urlToImage,
+          width: double.infinity,
+          height: 200,
+          fit: BoxFit.cover,
+        )
+            : const SizedBox.shrink(),
+        const SizedBox(height: 10),
+        Text(
+          article.content,
+          textAlign: TextAlign.justify,
+        ),
+      ],
     );
   }
 }

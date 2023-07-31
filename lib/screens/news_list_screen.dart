@@ -1,53 +1,43 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:new_projectv1/model/article_model.dart';
-import 'package:new_projectv1/model/news_model.dart';
+import 'package:get/get.dart';
+
+import '../controller/news_controller.dart';
 import '../manage_layout/news_list_item.dart';
+import '../model/article_model.dart';
 import '../utils/message.dart';
-import '../utils/news_service.dart';
 
-class NewsListScreen extends StatefulWidget {
-  const NewsListScreen({super.key});
+class NewsListScreen extends StatelessWidget {
+  final NewsController _newsController = Get.put(NewsController());
 
-  @override
-  _NewsListScreenState createState() => _NewsListScreenState();
-}
-
-class _NewsListScreenState extends State<NewsListScreen> {
-  List<Article> _articles = [];
-  List<Article> _searchResults = [];
-  final NewsService _newsService = NewsService();
-  bool _isLoading = true;
-  bool _isSearching = false;
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchNews();
-  }
+  NewsListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const Drawer(),
       appBar: AppBar(
-        title: _isSearching ? _buildSearchField() : const TitleAppBar(),
+        title: Obx(
+              () => _newsController.isSearching
+              ? _buildSearchField()
+              : const TitleAppBar(),
+        ),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
         actions: [
-          _buildSearchIcon(),
+          Obx(() => _buildSearchIcon()),
         ],
       ),
-      body: _isLoading
+      body: Obx(() => _newsController.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : (_isSearching ? _buildSearchResults() : _buildArticleList()),
+          : (_newsController.isSearching
+          ? _buildSearchResults()
+          : _buildArticleList())),
     );
   }
 
   Widget _buildSearchField() {
     return TextField(
-      controller: _searchController,
+      controller: _newsController.searchController,
       autofocus: true,
       decoration: const InputDecoration(
         hintText: 'Search...',
@@ -56,7 +46,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
       ),
       style: const TextStyle(color: Colors.white, fontSize: 16),
       onChanged: (value) {
-        _inputSearch(value);
+        _newsController.inputSearch(value);
       },
     );
   }
@@ -64,25 +54,20 @@ class _NewsListScreenState extends State<NewsListScreen> {
   Widget _buildSearchIcon() {
     return IconButton(
       onPressed: () {
-        setState(() {
-          _isSearching = !_isSearching;
-          if (!_isSearching) {
-            _searchController.clear();
-            _searchResults.clear();
-          }
-        });
+        _newsController.toggleSearch();
       },
-      icon: Icon(_isSearching ? Icons.close : Icons.search_rounded),
+      icon: Icon(
+          _newsController.isSearching ? Icons.close : Icons.search_rounded),
     );
   }
 
   Widget _buildSearchResults() {
-    return _searchResults.isNotEmpty
+    return _newsController.searchResults.isNotEmpty
         ? ListView.builder(
       shrinkWrap: true,
-      itemCount: _searchResults.length,
+      itemCount: _newsController.searchResults.length,
       itemBuilder: (context, index) {
-        Article article = _searchResults[index];
+        Article article = _newsController.searchResults[index];
         return NewsListItem(article: article);
       },
     )
@@ -92,58 +77,16 @@ class _NewsListScreenState extends State<NewsListScreen> {
   }
 
   Widget _buildArticleList() {
-    return _articles.isEmpty
+    return _newsController.articles.isEmpty
         ? const Center(child: Text(Message.mEmpty))
         : ListView.builder(
       shrinkWrap: true,
-      itemCount: _articles.length,
+      itemCount: _newsController.articles.length,
       itemBuilder: (context, index) {
-        Article article = _articles[index];
+        Article article = _newsController.articles[index];
         return NewsListItem(article: article);
       },
     );
-  }
-
-
-
-  void _fetchNews() async {
-    try {
-      News news = await _newsService.fetchNews();
-      setState(() {
-        _articles = news.articles;
-        _isLoading = false;
-
-        if (kDebugMode) {
-          print(news.articles.toString());
-        }
-      });
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
-      if (kDebugMode) {
-        print('${Message.mError} $e');
-      }
-    }
-  }
-
-  void _inputSearch(String query) async {
-    if (query.isEmpty) {
-      setState(() {
-        _searchResults.clear();
-      });
-    } else {
-      try {
-        News searchNews = await _newsService.searchNews(query);
-        setState(() {
-          _searchResults = searchNews.articles;
-        });
-      } catch (e) {
-        if (kDebugMode) {
-          print('${Message.mError} $e');
-        }
-      }
-    }
   }
 }
 
