@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:new_projectv1/model/article_model.dart';
-import 'package:new_projectv1/utils/date_time_formatter.dart';
-import 'package:new_projectv1/utils/message.dart';
 
-import 'news_list_screen.dart';
+import '../../model/article_model.dart';
+import '../../utils/date_time_formatter.dart';
+import '../../utils/message.dart';
+import '../home/home_sceen.dart';
 
 class NewsDetailScreen extends StatelessWidget {
   final Article article;
 
-  const NewsDetailScreen({super.key, required this.article});
+  const NewsDetailScreen({super.key,  required this.article});
 
   @override
   Widget build(BuildContext context) {

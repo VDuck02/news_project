@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:new_projectv1/utils/message.dart';
 
 import '../model/news_model.dart';
+import 'message.dart';
 
 
 class NewsService {

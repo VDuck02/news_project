@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controller/news_controller.dart';
-import '../manage_layout/news_list_item.dart';
-import '../model/article_model.dart';
-import '../utils/message.dart';
+import '../../manage_layout/news_list_item.dart';
+import '../../model/article_model.dart';
+import '../../utils/message.dart';
+import 'home_controller.dart';
 
-class NewsListScreen extends StatelessWidget {
+
+class HomeScreen extends StatelessWidget {
   final NewsController _newsController = Get.put(NewsController());
 
-  NewsListScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

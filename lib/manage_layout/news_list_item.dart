@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:new_projectv1/model/article_model.dart';
-import 'package:new_projectv1/utils/date_time_formatter.dart';
-import 'package:new_projectv1/screens/news_detail_screen.dart';
+import '../model/article_model.dart';
+import '../modules/news_detail/news_detail_screen.dart';
+import '../utils/date_time_formatter.dart';
+
 
 class NewsListItem extends StatelessWidget {
   final Article article;

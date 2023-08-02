@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:new_projectv1/utils/message.dart';
 
-import '../model/article_model.dart';
-import '../model/news_model.dart';
-import '../utils/news_service.dart';
+import '../../model/article_model.dart';
+import '../../model/news_model.dart';
+import '../../utils/message.dart';
+import '../../utils/news_service.dart';
 
 class NewsController extends GetxController {
   final NewsService _newsService = Get.find<NewsService>();
