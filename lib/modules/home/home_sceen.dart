@@ -7,10 +7,9 @@ import '../../utils/message.dart';
 import 'home_controller.dart';
 
 
-class HomeScreen extends StatelessWidget {
-  final NewsController _newsController = Get.put(NewsController());
+class HomeScreen extends GetView<NewsController> {
 
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class HomeScreen extends StatelessWidget {
       drawer: const Drawer(),
       appBar: AppBar(
         title: Obx(
-              () => _newsController.isSearching
+              () => controller.isSearching
               ? _buildSearchField()
               : const TitleAppBar(),
         ),
@@ -28,9 +27,9 @@ class HomeScreen extends StatelessWidget {
           Obx(() => _buildSearchIcon()),
         ],
       ),
-      body: Obx(() => _newsController.isLoading
+      body: Obx(() => controller.isLoading
           ? const Center(child: CircularProgressIndicator())
-          : (_newsController.isSearching
+          : (controller.isSearching
           ? _buildSearchResults()
           : _buildArticleList())),
     );
@@ -38,7 +37,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildSearchField() {
     return TextField(
-      controller: _newsController.searchController,
+      controller: controller.searchController,
       autofocus: true,
       decoration: const InputDecoration(
         hintText: 'Search...',
@@ -47,7 +46,7 @@ class HomeScreen extends StatelessWidget {
       ),
       style: const TextStyle(color: Colors.white, fontSize: 16),
       onChanged: (value) {
-        _newsController.inputSearch(value);
+        controller.inputSearch(value);
       },
     );
   }
@@ -55,20 +54,20 @@ class HomeScreen extends StatelessWidget {
   Widget _buildSearchIcon() {
     return IconButton(
       onPressed: () {
-        _newsController.toggleSearch();
+        controller.toggleSearch();
       },
       icon: Icon(
-          _newsController.isSearching ? Icons.close : Icons.search_rounded),
+          controller.isSearching ? Icons.close : Icons.search_rounded),
     );
   }
 
   Widget _buildSearchResults() {
-    return _newsController.searchResults.isNotEmpty
+    return controller.searchResults.isNotEmpty
         ? ListView.builder(
       shrinkWrap: true,
-      itemCount: _newsController.searchResults.length,
+      itemCount: controller.searchResults.length,
       itemBuilder: (context, index) {
-        Article article = _newsController.searchResults[index];
+        Article article = controller.searchResults[index];
         return NewsListItem(article: article);
       },
     )
@@ -78,13 +77,13 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildArticleList() {
-    return _newsController.articles.isEmpty
+    return controller.articles.isEmpty
         ? const Center(child: Text(Message.mEmpty))
         : ListView.builder(
       shrinkWrap: true,
-      itemCount: _newsController.articles.length,
+      itemCount: controller.articles.length,
       itemBuilder: (context, index) {
-        Article article = _newsController.articles[index];
+        Article article = controller.articles[index];
         return NewsListItem(article: article);
       },
     );

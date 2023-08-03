@@ -4,8 +4,10 @@ import '../../model/article_model.dart';
 import '../../utils/date_time_formatter.dart';
 import '../../utils/message.dart';
 import '../home/home_sceen.dart';
+import 'news_detail_controller.dart';
+import 'package:get/get.dart';
 
-class NewsDetailScreen extends StatelessWidget {
+class NewsDetailScreen extends GetView<NewDetailsController> {
   final Article article;
 
   const NewsDetailScreen({super.key,  required this.article});

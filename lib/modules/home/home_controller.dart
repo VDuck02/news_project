@@ -28,7 +28,6 @@ class NewsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    Get.put(NewsService());
     _fetchNews();
   }
 

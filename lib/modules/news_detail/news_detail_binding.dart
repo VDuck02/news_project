@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
-class HomeBinding extends Bindings {
+
+import 'news_detail_controller.dart';
+class NewDetailBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => null);
+    Get.lazyPut(() => NewDetailsController());
   }
 }
